@@ -59,6 +59,6 @@ Further technical details will also be updated following the grant to avoid prem
 
 - Prototype: **Completed**
 - Experimental characterization: **Completed**
-- IEEE PEDAS: **Accepted**
+- IEEE PEDAS: **Digest Accepted**
 - Patent Application: **Pending grant**
 - Detailed results/data: **To be added after patent grant**
