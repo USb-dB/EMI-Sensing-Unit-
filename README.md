@@ -1,31 +1,23 @@
 # Portable EMI/EMC Meter
 
-A portable, low-cost EMI/EMC measurement system developed for sensing and characterizing high-frequency electromagnetic emissions from electronic and digital switching systems.
+A portable, low-cost EMI/EMC measurement system for sensing and characterizing high-frequency electr   omagnetic emissions from electronic and digital switching systems.Modern digital and power-electronic systems rely on increasingly fast switching signals. Although a digital clock is typically specified by its fundamental frequency, its finite rise and fall times introduce a broad spectrum of higher-order harmonics.
 
 ## Spectral Analysis of a Practical Digital Clock
 
-Modern digital systems use clock and switching signals with finite rise and fall
-times. These non-ideal transitions introduce higher-order harmonics that can
-extend far beyond the fundamental clock frequency.
+Practical digital clock signals have finite rise and fall times. These non-ideal transitions generate higher-order harmonics that can extend far beyond the fundamental clock frequency.
 
-For a periodic waveform with repetition period \(T\),
+For a periodic waveform with period \(T\),
 
-\[
-f_n = nf_0 = \frac{n}{T}.
-\]
+$$
+f_n = n f_0 = \frac{n}{T}
+$$
 
-Therefore, even a relatively low-frequency clock can generate significant
-high-frequency spectral components when its transitions are sufficiently fast.
+where \(f_0\) is the fundamental frequency and \(n\) is the harmonic order.
 
-### Trapezoidal Clock Model
+A trapezoidal clock can be characterized by amplitude \(A\), period \(T\), rise time \(T_r\), fall time \(T_f\), and high-state duration \(\tau\). For a symmetric waveform, \(T_r=T_f\), the harmonic amplitudes can be approximated by
 
-As a practical model, we consider a trapezoidal clock waveform with rise time
-\(T_r\), fall time \(T_f\), duty cycle \(D\), and repetition period \(T\).
+$$
 
-For the symmetric case \(T_r=T_f\), the magnitude of the Fourier coefficients
-is given by
-
-\[
 |C_n|=
 \frac{2A\tau}{T}
 \left|
@@ -35,205 +27,252 @@ is given by
 \left|
 \frac{\sin(n\pi\tau/T)}
 {n\pi\tau/T}
-\right|,
-\qquad n\neq0.
-\]
+\right|
+$$
 
-The corresponding harmonic frequencies are
+For the simulations, a \(50~\mathrm{MHz}\) clock was considered:
 
-\[
-f_n=nf_0=\frac{n}{T}.
-\]
-
-For the simulations below, a 50 MHz clock was considered, corresponding to
-
-\[
-T=20~\mathrm{ns}.
-\]
-
-### Effect of Rise/Fall-Time Asymmetry and Duty Cycle
-
-The harmonic spectrum was first evaluated for three representative cases:
-
-1. \(T_r=2~\mathrm{ns}\), \(T_f=3~\mathrm{ns}\), duty cycle = 50%.
-2. \(T_r=T_f=2~\mathrm{ns}\), duty cycle = 50%.
-3. \(T_r=T_f=2~\mathrm{ns}\), duty cycle = 48%.
-
-These cases illustrate the sensitivity of the harmonic spectrum to transition
-symmetry and duty cycle.
-
-<!-- IMAGE: Three FFT spectra comparing rise/fall asymmetry and duty cycle -->
+$$
+f_0=50~\mathrm{MHz},
+\qquad
+T=20~\mathrm{ns}
+$$
 
 <p align="center">
-  <img src="Figs/EvenHarmonicsSupression.png"
-       width="100%"
-       alt="FFT spectra for different rise/fall times and duty cycles">
+  <img src="Figs/clocksingnal.png"
+       width="60%"
+       alt="FFT spectra for different rise and fall times and duty cycles">
 </p>
 
-**Figure:** FFT spectra of the 50 MHz trapezoidal clock for different rise/fall
-times and duty cycles.
+### Effect of Rise/Fall Time and Duty Cycle
 
-### Suppression of Even Harmonics at 50% Duty Cycle
+In many practical digital-clock applications, the duty cycle is designed to be close to \(50\%\). This condition is particularly interesting from an EMI/EMC perspective because, for the symmetric case \(T_r=T_f\), the Fourier-series coefficient can be written as
 
-The symmetric 50% duty-cycle case exhibits an important property.
+$$
+|C_n|=
+\frac{2A\tau}{T}
+\left|
+\frac{\sin(n\pi T_r/T)}
+{n\pi T_r/T}
+\right|
+\left|
+\frac{\sin(n\pi\tau/T)}
+{n\pi\tau/T}
+\right|.
+$$
 
-For
+For a \(50\%\) duty cycle,
 
-\[
-D=50\%,
-\]
+$$
+\tau=\frac{T}{2},
+$$
 
-we have
+and therefore the second term becomes
 
-\[
-\tau=\frac{T}{2}.
-\]
-
-The corresponding term in the Fourier coefficient becomes
-
-\[
+$$
 \left|
 \frac{\sin(n\pi/2)}
 {n\pi/2}
 \right|.
-\]
+$$
 
-For even \(n\),
+For even harmonics, \(n=2k\),
 
-\[
-n=2,4,6,\ldots,
-\]
+$$
+\sin\left(\frac{2k\pi}{2}\right)
+=
+\sin(k\pi)
+=
+0,
+$$
 
-and therefore
+giving
 
-\[
-\sin\left(\frac{n\pi}{2}\right)=0.
-\]
-
-Consequently,
-
-\[
+$$
 \boxed{C_{2k}=0}.
-\]
+$$
 
-Thus, for an ideal symmetric 50% duty-cycle waveform, the even harmonics
-are suppressed. This cancellation is lost when the duty cycle deviates from
-50% or when the waveform becomes asymmetric.
+Thus, an ideal symmetric \(50\%\)-duty-cycle clock suppresses all even-order harmonics. This property is particularly useful for **EMI/EMC characterization of high-speed digital clocks**, since it provides a clear spectral signature of waveform symmetry. In practical systems, deviations from \(50\%\) duty cycle or asymmetry between the rise and fall times cause the suppressed even harmonics to reappear. These even-order components can therefore provide a useful indication of non-ideal switching behavior and waveform asymmetry.
 
-The numerical FFT results reproduce this behavior, providing a direct
-numerical verification of the analytical Fourier-series expression.
+<p align="center">
+  <img src="Figs/EvenHarmonicsSupression.png"
+       width="100%"
+       alt="FFT spectra for different rise and fall times and duty cycles">
+</p>
 
+**Figure:** FFT spectra of the \(50~\mathrm{MHz}\) trapezoidal clock for different rise/fall times and duty cycles.
+
+As shown in the figure above, this characteristic is clearly visible in the simulated spectra. For the symmetric case with \(T_r=T_f=2~\mathrm{ns}\) and a \(50\%\) duty cycle, the even-order harmonics are suppressed, while the odd-order harmonics remain prominent. For the other two cases, either the rise and fall times are asymmetric or the duty cycle deviates from \(50\%\), resulting in the reappearance of the even-order harmonics. This demonstrates that both the duty cycle and the symmetry of the transition times play an important role in determining the harmonic content of a practical digital clock.
 ### Spectral Envelope
 
-The analytical expression also provides insight into the frequency-dependent
-decay of the harmonic spectrum.
+Taking the logarithm of the analytical expression above and using
 
-Using
-
-\[
+$$
 f=\frac{n}{T},
-\]
+$$
 
-the two sinc arguments can be written as
+the frequency-dependent terms can be written as
 
-\[
-n\pi\frac{T_r}{T}=\pi fT_r
-\]
-
-and
-
-\[
-n\pi\frac{\tau}{T}=\pi f\tau.
-\]
-
-The characteristic break frequencies are therefore approximately
-
-\[
-f_{b1}=\frac{1}{\tau}
-\]
+$$
+\frac{\sin(n\pi T_r/T)}{n\pi T_r/T}
+=
+\frac{\sin(\pi fT_r)}{\pi fT_r}
+$$
 
 and
 
-\[
-f_{b2}=\frac{1}{T_r}.
-\]
+$$
+\frac{\sin(n\pi\tau/T)}{n\pi\tau/T}
+=
+\frac{\sin(\pi f\tau)}{\pi f\tau}.
+$$
 
-For
+For the asymptotic regions, this gives
 
-\[
-\tau=10~\mathrm{ns},
+$$
+|C_n|\propto
+\begin{cases}
+f^0, & f\ll 1/\tau,\\[4pt]
+f^{-1}, & 1/\tau\ll f\ll 1/T_r,\\[4pt]
+f^{-2}, & f\gg 1/T_r.
+\end{cases}
+$$
+
+Hence, in decibels,
+
+$$
+\boxed{
+|C_n|_{\mathrm{dB}}\propto
+\begin{cases}
+0~\mathrm{dB/decade}, & f<1/\tau,\\[4pt]
+-20~\mathrm{dB/decade}, & 1/\tau<f<1/T_r,\\[4pt]
+-40~\mathrm{dB/decade}, & f>1/T_r.
+\end{cases}}
+$$
+
+For \(\tau=10~\mathrm{ns}\) and \(T_r=T_f=2~\mathrm{ns}\),
+
+$$
+\frac{1}{\tau}=100~\mathrm{MHz},
 \qquad
-T_r=2~\mathrm{ns},
-\]
+\frac{1}{T_r}=500~\mathrm{MHz}.
+$$
 
-these correspond to
-
-\[
-f_{b1}=100~\mathrm{MHz}
-\]
-
-and
-
-\[
-f_{b2}=500~\mathrm{MHz}.
-\]
-
-Below the first characteristic frequency, the spectrum is approximately
-constant, corresponding to
-
-\[
-0~\mathrm{dB/decade}.
-\]
-
-After the first breakpoint, one sinc term dominates the asymptotic behavior,
-giving approximately
-
-\[
--20~\mathrm{dB/decade}.
-\]
-
-Beyond the second breakpoint, both sinc terms contribute and the asymptotic
-decay becomes approximately
-
-\[
--40~\mathrm{dB/decade}.
-\]
-
-The analytical spectrum and the discrete FFT harmonics are shown below.
-
-<!-- IMAGE: Analytical spectrum + FFT harmonics + asymptotic slopes -->
+The analytical spectrum together with the FFT harmonics and these asymptotic
+regions is shown below.
 
 <p align="center">
   <img src="Figs/Gain_dB plot.png"
-       width="90%"
-       alt="Analytical trapezoidal pulse spectrum and FFT harmonics">
+       width="80%"
+       alt="Trapezoidal pulse spectrum with FFT harmonics and asymptotic slopes">
 </p>
 
-**Figure:** Normalized spectrum of the 50 MHz trapezoidal clock. The discrete
-points represent the FFT coefficients at the harmonic frequencies, while the
-continuous curve represents the analytical spectrum. The dashed lines show
-the asymptotic 0, -20, and -40 dB/decade regions and the corresponding
-characteristic frequencies.
+**Figure:** Analytical and FFT spectrum of the 50 MHz trapezoidal clock,
+showing the \(1/\tau\) and \(1/T_r\) break frequencies and the corresponding
+spectral roll-off.
 
-The agreement between the FFT harmonics and the analytical spectrum verifies
-the numerical implementation and provides the spectral basis for the
-experimental EMI/EMC measurements described below.
+This plot is important for EMI/EMC analysis because it shows that the
+high-frequency content of a digital clock is determined strongly by its pulse
+width and rise/fall time. Thus, even a clock with a relatively low fundamental
+frequency can produce significant spectral components at much higher
+frequencies.
 
-## Why This Matters for EMI/EMC
+## V1 — Initial Portable EMI/EMC Sensor
 
-The above analysis demonstrates that the electromagnetic emissions generated
-by a digital system cannot be characterized solely by its fundamental clock
-frequency.
+The first prototype (V1) was developed as a compact, low-cost EMI/EMC sensing
+platform based on a coil-type sensing element and an analog front-end (AFE).
+The PCB was designed and fabricated as a compact board, with the sensing and
+signal-conditioning circuitry integrated into a portable form factor.
 
-A 50 MHz clock with nanosecond-scale transitions can contain substantial
-spectral components hundreds of MHz above the fundamental and, depending on
-the transition time, potentially into the GHz range.
+<!-- V1 PCB layout -->
 
-These high-frequency components can couple through PCB traces, power and
-ground networks, cables, connectors, and parasitic capacitances and
-inductances. Consequently, the electromagnetic environment around a digital
-system can contain significant energy at frequencies far above the nominal
-clock frequency.
+<p align="center">
+  <img src="Figs/PCB Design.png"
+       width="90%"
+       alt="V1 EMI/EMC sensor PCB layout">
+</p>
 
-This motivates the development of a portable measurement system capable of
-detecting and characterizing these emissions.
+The assembled V1 prototype was experimentally tested using external test
+equipment to characterize its response to electrical excitation.
+
+<!-- V1 experimental setup -->
+
+<p align="center">
+  <img src="Figs/EXP SEtup.jpg"
+       width="55%"
+       alt="Experimental setup for V1 EMI/EMC sensor">
+</p>
+The frequency response was characterized by sweeping the excitation frequency
+of a radiating coil at an approximately 5 cm coil-to-sensor distance. The gain-bandwidth product of the whole system from coil to AFE output was claculated to be : 
+
+$$
+\mathrm{GBW}_{\mathrm{exp}}\approx 50\times3~\mathrm{kHz}
+\approx150~\mathrm{kHz}.
+$$
+
+This measurement establishes the baseline frequency response and bandwidth
+limitation of the V1 sensing system.
+
+<!-- V1 frequency response -->
+
+<p align="center">
+  <img src="Figs/Response.png"
+       width="55%"
+       alt="Measured frequency response of V1 EMI/EMC sensor">
+</p>
+
+The V1 implementation establishes the basic sensing concept and provides the
+experimental foundation for the higher-bandwidth versions of the system.
+
+## V2 — Higher-Bandwidth Sensing and Embedded FFT
+
+The second version (V2) focuses on overcoming the bandwidth and processing
+limitations identified in V1. The analog front-end was redesigned using a
+higher-gain-bandwidth operational amplifier to extend the usable frequency
+range of the sensing chain.
+
+In addition to the improved analog front-end, preliminary embedded
+frequency-domain processing was implemented using an ESP32. This enables the
+captured signal to be transformed into the frequency domain and provides a
+path toward real-time spectral monitoring of digital and switching systems.
+
+The V2 development demonstrates the transition from a basic sensing prototype
+toward an integrated EMI/EMC measurement platform. The work has been presented
+at Inventive and has been accepted at IEEE PEDES 2026. A related patent has also
+been published and is currently pending grant with apllication ID 202631013071.
+
+## V3 — Future Development
+
+The final objective of the project is to develop a ready-to-use portable
+EMI/EMC measurement instrument. The planned V3 architecture will extend the
+current system through:
+
+- Multiple interchangeable EMI/EMC probes for different measurement
+  configurations.
+- A higher-frequency and higher-bandwidth analog front-end.
+- FPGA-based real-time DSP and FFT processing.
+- Integrated spectrum monitoring and display.
+- A compact, standalone and portable enclosure.
+- Improved measurement flexibility for digital, power-electronic and
+  switching systems.
+
+The development of the FPGA-based DSP and monitoring/display subsystem has
+already been initiated. The long-term objective is to combine the sensing,
+analog conditioning, high-speed acquisition, digital signal processing and
+display into a single portable instrument.
+
+## Repository and Data Availability
+
+The repository will be progressively updated as the project develops.
+Simulation files, PCB design files, firmware, MATLAB analysis scripts and
+experimental results will be added where appropriate.
+
+Detailed LTspice simulations, complete circuit parameters, measurement data
+and additional experimental results will be released progressively once the
+corresponding research work and publications are finalized. This approach is
+intended to ensure that the repository remains consistent with the published
+work and associated intellectual-property considerations.
+
+Additional hardware documentation, datasets and analysis files will be made
+available in future releases as the project progresses toward the final V3
+portable implementation.
