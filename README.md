@@ -38,3 +38,27 @@ High-Frequency Switching Source
              │
              ▼
     EMI Spectral Characterization
+```
+## Publication and Intellectual Property
+
+This work has been **accepted for presentation/publication at IEEE PEDAS**.
+
+The associated intellectual property is protected under:
+
+**Indian Patent Application No. 202631013071**
+
+The patent application is currently **pending grant**.
+
+## Results
+
+The prototype has been experimentally characterized using a controlled coil-antenna test source. Detailed measurement data, spectral results, and experimental characterization plots will be added to this repository **after the patent is granted**.
+
+Further technical details will also be updated following the grant to avoid premature disclosure of patent-related information.
+
+## Current Status
+
+- Prototype: **Completed**
+- Experimental characterization: **Completed**
+- IEEE PEDAS: **Accepted**
+- Patent Application: **Pending grant**
+- Detailed results/data: **To be added after patent grant**
