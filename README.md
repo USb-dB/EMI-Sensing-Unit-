@@ -77,14 +77,13 @@ $$
 
 For even harmonics, \(n=2k\),
 
-$$
+```math
 \sin\left(\frac{2k\pi}{2}\right)
 =
 \sin(k\pi)
 =
-0,
-$$
-
+0
+```
 giving
 
 $$
@@ -112,21 +111,21 @@ f=\frac{n}{T},
 $$
 
 the frequency-dependent terms can be written as
-
+```math
 $$
 \frac{\sin(n\pi T_r/T)}{n\pi T_r/T}
 =
 \frac{\sin(\pi fT_r)}{\pi fT_r}
 $$
-
+```
 and
-
+```math
 $$
 \frac{\sin(n\pi\tau/T)}{n\pi\tau/T}
 =
 \frac{\sin(\pi f\tau)}{\pi f\tau}.
 $$
-
+```
 For the asymptotic regions, this gives
 
 $$
